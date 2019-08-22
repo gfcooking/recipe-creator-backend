@@ -2,13 +2,14 @@ from argparse import ArgumentParser
 from flask import Flask
 from flask_cors import CORS
 from flask_ruko import RukoDB
-from raille import Api
+from flask_resto import Api
 from uuid import uuid4
+import os
 
 app = Flask(__name__)
 CORS(app)
 api = Api(app)
-db = RukoDB(app, host='localhost', port=12422)
+db = RukoDB(app, host=os.environ['RUKO_HOST'], port=int(os.environ['RUKO_PORT']))
 recipes = db['recipes']
 
 
