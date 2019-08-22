@@ -1,13 +1,21 @@
+#!/usr/bin/env python3
 import requests
 import re
 
+from argparse import ArgumentParser
+
 
 def main():
-    items = requests.get('https://github.com/gfcooking/recipes/raw/master/RecipeList.txt').text.split('\n')
+    parser = ArgumentParser()
+    parser.add_argument('upload_server')
+    parser.add_argument('--source', default='https://github.com/gfcooking/recipes/raw/master')
+    args = parser.parse_args()
+
+    items = requests.get(args.source + '/RecipeList.txt').text.split('\n')
     items = [i.strip() for i in items if i.strip() and not i.strip().startswith('//')]
     items = [i.strip() for i in items if i.strip() and not i.strip().startswith('--')]
     items = [i.replace('.txt', '') for i in items if i.strip() and not i.strip().startswith('--')]
-    recipes = [requests.get('https://raw.githubusercontent.com/gfcooking/recipes/master/{}.txt'.format(item)).text for
+    recipes = [requests.get(args.source + '/{}.txt'.format(item)).text for
                item in items]
     recipes = dict(zip(items, recipes))
 
@@ -34,7 +42,7 @@ def main():
         data = {'title': title, 'description': description, 'ingredientCategories': ingredients,
                                   'directions': directions, 'notes': notes, 'tags': []}
         print('Uploading {}...'.format(data))
-        print(requests.post('http://localhost:22626/recipes', json=data).json())
+        print(requests.post(args.upload_server + '/recipes', json=data).json())
 
 
 if __name__ == '__main__':
