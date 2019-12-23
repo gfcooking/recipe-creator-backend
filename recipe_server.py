@@ -15,7 +15,7 @@ recipes = db['recipes']
 
 class Recipe:
     def create(self):
-        recipes.append({
+        recipe = {
             'uuid': str(uuid4()),
             'title': api.json['title'],
             'description': api.json['description'],
@@ -23,11 +23,12 @@ class Recipe:
             'directions': api.json['directions'],
             'notes': api.json['notes'],
             'tags': api.json['tags']
-        })
-        return {}
+        }
+        recipes.append(recipe)
+        return recipe
 
     def replace(self, recipe_uuid):
-        recipes.by('uuid')[recipe_uuid] = {
+        new_data = {
             'uuid': recipe_uuid,
             'title': api.json['title'],
             'description': api.json['description'],
@@ -36,7 +37,8 @@ class Recipe:
             'notes': api.json['notes'],
             'tags': api.json['tags']
         }
-        return {}
+        recipes.by('uuid')[recipe_uuid] = new_data
+        return new_data
 
     def get(self, recipe_uuid):
         return recipes.by('uuid')[recipe_uuid]()
