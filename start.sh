@@ -2,6 +2,7 @@
 
 trap "trap - SIGTERM && echo KILLING && kill -- -$$" SIGINT SIGTERM EXIT
 
+cd "$(dirname $0)"
 RECIPE_HOST=${RECIPE_HOST:-0.0.0.0}
 RECIPE_PORT=${RECIPE_PORT:-8000}
 export RUKO_HOST=0.0.0.0
