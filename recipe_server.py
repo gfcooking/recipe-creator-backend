@@ -35,7 +35,7 @@ class Recipe:
             'ingredientCategories': api.json['ingredientCategories'],
             'directions': api.json['directions'],
             'notes': api.json['notes'],
-            'tags': api.json['tags']
+            'tags': [i.lower() for i in api.json['tags']]
         }
         recipes.by('uuid')[recipe_uuid] = new_data
         return new_data
