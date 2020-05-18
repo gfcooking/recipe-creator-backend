@@ -1,0 +1,12 @@
+[Unit]
+Description=Recipe Creator Backend
+
+[Service]
+User=pi
+TimeoutStopSec=10
+ExecStart=%%PATH%%/start.sh
+Restart=always
+RestartSec=60
+
+[Install]
+WantedBy=multi-user.target
